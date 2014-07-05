@@ -256,6 +256,27 @@
 		}
 							
 
+		ul.contact li {
+			padding: 1.05em 0;
+			border-top: 1px solid;
+			border-color: rgba(192, 192, 192, 0.15);
+		}
+
+			ul.contact li > span {
+				display: inline-block;
+			}
+
+			ul.contact li .address, ul.contact li .mail, ul.contact li .phone {
+				float: left;
+				width: 100px;
+				font-weight: 600;
+			}
+
+		ul.contact > :first-child {
+			padding-top: 0;
+			border-top: none;
+		}
+
 	/* Buttons */
 		
 		.button
@@ -362,6 +383,7 @@
 		color: #FFF;
 	}
 	
+
 /*********************************************************************************/
 /* Copyright                                                                     */
 /*********************************************************************************/

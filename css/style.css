@@ -277,6 +277,37 @@
 			border-top: none;
 		}
 
+		
+		
+		ul.publist li {
+			padding: 1.05em 0;
+			border-color: rgba(192, 192, 192, 0.15);
+		}
+
+			ul.publist li > span {
+				display: inline-block;
+			}
+
+			ul.publist li .date {
+				float: left;
+				width: 100px;
+				font-weight: 600;
+			}
+
+			ul.publist li .papers {
+				padding-left: 30px;
+				font-weight: 10;
+			}
+
+			ul.publist li .cgd {
+				text-decoration: underline;
+			}
+		
+		ul.publist > :first-child {
+			padding-top: 0;
+			border-top: none;
+		}
+
 	/* Buttons */
 		
 		.button

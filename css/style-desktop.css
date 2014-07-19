@@ -141,7 +141,7 @@
 	
 	#content header
 	{
-		margin-bottom: 2em;
+		margin-bottom: 0em;
 	}
 	
 	#content header h2
@@ -153,7 +153,13 @@
 	{
 		font-size: 1.40em;
 	}
-	
+
+	#content header .subsectit
+	{
+		font-size: 1.40em;
+		font-weight: bold;
+	}
+
 	#sidebar h2
 	{
 		display: block;

@@ -158,6 +158,20 @@
 	{
 		font-size: 1.40em;
 		font-weight: bold;
+		display:inline;
+	}
+
+	#content .illustration
+	{
+		float:left;
+		width:100px;
+		padding:5px;
+		margin: 5px 20px 5px 0px;
+  }
+	
+	#content .text
+	{
+		float:left;
 	}
 
 	#sidebar h2

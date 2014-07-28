@@ -167,7 +167,14 @@
 				width: 100%;
 				margin: 0 0 2em 0;
 			}
-			
+
+			.image.team
+			{
+				display: block;
+				width: 100%;
+				margin: 0 0 0em 0;
+			}
+						
 			.image.left
 			{
 				float: left;

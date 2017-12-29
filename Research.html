@@ -57,36 +57,95 @@
 					
 
 					<!-- Content -->
-					<div id="content" class="10u skel-cell-important">
+					<div id="content" class="8u skel-cell-important">
 						<section>
 
 							<header>
 								<h2>Research</h2>
-								<span class="byline">Research in the Danko Lab</span>
+								<!-- <span class="byline">Research in the Danko Lab</span> -->
 							</header>
-							<p>We study how patterns of gene expression are encoded in mammalian DNA sequences, and how these ‘regulatory codes’ contribute to evolution, development, and disease.  Our specialty is developing statistics and machine-learning approaches to analyze ‘functional genomic’ sequencing data, prepared using DNase-I-seq, PRO-seq, RNA-seq, and related assays.  Our tools borrow a wide variety of ideas from the fields of statistics and machine-learning, including recent uses of hidden Markov models, support vector machines, and artificial neural networks.</p>
-							<p>Ongoing projects in the lab study the role of gene regulation in the following biological systems:</p>
-
-							<header><span class="subsectit">Evolution: Changes in Gene Expression among Primates.</span></header>
-							<p class="text">
-							<img src="images/evolution.jpg" alt="" class="illustration"/>
-							We have used PRO-seq to map the location of RNA polymerases in CD4+ T-cells isolated from humans, chimpanzees, and rhesus macaques. These maps provide a rich source of data profiling both expression levels, and the location and activity of regulatory elements across 25 million years of primate evolution.  Using this data, we hope to understand how differences in gene expression arise from changes in DNA sequence, and how evolutionary pressures have shaped the human adaptive immune system during the last 25 million years.
+							<br>
+							<p>The Danko lab studies how our DNA sequences control complex programs of gene transcription. Our work is primarily focused on understanding how natural genetic differences between species affects the various steps in the RNA polymerase II transcription cycle. Our work provides insight into the molecular basis behind phenotypic differences between species. In addition, studying the millions of naturally occurring random genetic mutation “experiments” also presents an exciting opportunity to understand the fundamental principles by which our DNA sequences encode gene expression. <br><br>
+							We are an interdisciplinary research group making extensive use of both computational and molecular tools. Our specialty is developing statistical and machine-learning approaches to analyze functional genomic sequencing data prepared using Hi-C, ATAC-seq, PRO-seq, RNA-seq, and related assays. Our tools borrow a variety of ideas from the fields of statistics and machine-learning, including recent uses of hidden Markov models, support vector machines, and artificial neural networks. We also run an active wet-lab that has made great strides in developing and using “run-on and sequencing” technologies to map the location of RNA polymerase, including PRO-seq and ChRO-seq. More recently we have begun using Hi-C/ Hi-ChIP, single cell RNA-seq, and CRISPR epigenome editing technologies.
 							</p>
 
-							<header><span class="subsectit">Development: Gene Expression and Cell Fate Specification.</span></header>
+							<header><span class="subsectit">How does gene expression contribute to phenotypic differences between species?</span></header>
 							<p class="text">
-							<img src="images/TcellRegNet.jpg" alt="" class="illustration"/>
-							Naive CD4+ T-cells differentiate into a variety of effector subtypes which are collectively responsible for initiating and controlling adaptive immune responses.  T-cells select a specific lineage based on stereotypical expression patterns of ‘master regulator’ transcription factors (e.g., STAT6, GATA3, etc.).  Our objective is to understand how two closely related CD4+ T-cell subtypes, TH17 and TREG, are polarized to a particular cell fate.
+
+							Understanding the chain of molecular events that link DNA sequence ‘genotype’ to organism ‘phenotype’ is one of the most exciting frontiers in modern genetics. DNA sequences located in non-coding regions of the genome are critical drivers of phenotypic differences, both between and within species. <br><br>
+							Our objective is to discovery the fundamental rules by which transcriptional changes arise from DNA sequence and chromatin packaging within the nucleus by integrating genomic data collected using a combination of molecular assays (PRO-seq, RNA-seq, ATAC-seq, and Hi-C). Most of our work focuses on CD4+ T-cells, a lynchpin in the adaptive immune system undergoing rapid evolutionary changes that are relevant to autoimmune and allergic disorders. <br><br>
+							Our most recent work has found that although changes in distal regulatory elements arise rapidly, these changes frequently do not lead to measurable differences in the transcription of nearby genes. We find evidence that gene transcription is stabilized by multiple compensatory changes acting across ensembles of distal enhancers. This finding suggests a model of regulatory evolution in which changes in regulatory activities arise rapidly, and gene expression is held constant through stabilizing selection at the level of individual genes.
 							</p>
-							<header><span class="subsectit">Disease: Mapping Regulatory DNA Sequences in Breast Cancers.</span></header>
+
+							<header><span class="subsectit">Developing RNA polymerase as a mark denoting multiple ‘layers’ of genome function.</span></header>
 							<p class="text">
-							<img src="images/mammogram.jpg" alt="" class="illustration"/>
-							Breast cancer is fundamentally a disease of gene regulation, with more than 70% of tumors initially dependent on the transcription factor estrogen receptor alpha (ERα) for growth and proliferation.  Understanding how breast cancers originate and progress requires mapping loci that control gene expression in hundreds of primary human tumor samples.  We have begun an ambitious project to map the location and activity of functional elements in primary breast and matched normal tissue samples.
+							A core mission of the Danko lab is to invent creative new strategies to investigate the process of transcription by mapping RNA polymerases directly, rather than relying on surrogates such as mRNA abundance.<br><br>
+							Detecting the set of biochemically active DNA sequences in a cell (sometimes referred to as a cell’s “epigenome”) is a major challenge in genomics.  Many approaches rely on using dozens of separate experimental assays, making the analysis of new cell systems expensive and time-consuming. We have recently demonstrated that RNA polymerase marks a surprisingly broad variety of functional elements across the genome with a set of characteristic “shapes” that can be discovered using machine learning tools. <br><br>
+							Our work seeks to develop a computational toolkit that de-convolves a single PRO-seq assay into a rich source of information about multiple ‘layers’ of functional elements that are active in our genomes. We have developed a machine learning tool called dREG which identifies the location of active regulatory DNA sequence elements using PRO-seq data as input. More recently, we have trained discriminative support vector machines to identify transcription factor binding sites with a high accuracy, and we have begun using transcription to guess or ‘impute’ the abundance of covalent modifications to core histones. These technologies seek to allow comprehensive annotation of functional elements in mammalian genomes using PRO-seq data alone.<br><br>
+							Finally, a core mission of the wet-lab is to extend run-on and sequencing assays, such as PRO-seq, to map the location of RNA polymerase across the genome.  In addition, we have recently introduced a new run-on and sequencing variant called ChRO-seq to address the key problem with PRO-seq – namely that it requires a nuclear isolation, which can be challenging in complex tissue samples such as muscle or brain.  We have also made substantial progress on strategies to multiplex the PRO-seq and ChRO-seq assays, using a 96-well plate format in combination with molecular barcoding.  Taken together, our efforts significantly expand the scope and range of applications in which PRO-seq can be applied.  
 							</p>
+
+							<BR><BR>
+							<header><span class="subsectit">Core papers from the Danko lab.</span></header>
+							<p class="text">
+							<BR>
+
+							<strong>Chromatin run-on reveals nascent RNAs that differentiate normal and malignant brain tissue.</strong> <br>
+							<span class="cgd">Chu T</span>, <span class="cgd">Rice EJ</span>, Booth GT, Salamanca HH, <span class="cgd">Wang Z</span>, Core LJ, Longo SL, Corona RJ, Chin LS, List JT, Kwak H, <span class="cgd">Danko CG</span>. <br>
+							Under revision (2018). <br>
+							Preprint: <a title="[bioRxiv]" href="http://www.biorxiv.org/content/early/2017/09/07/185991">bioRxiv.</a>
+							<BR><BR>
+
+							<strong>Natural Selection has Shaped Coding and Non-coding Transcription in Primate CD4+ T-cells.</strong> <br>
+							<span class="cgd">Danko CG</span>, <span class="cgd">Choate LA</span>, Marks BA, <span class="cgd">Rice EJ</span>, <span class="cgd">Wang Z</span>, <span class="cgd">Chu T</span>, Martins AL, Dukler N, Coonrod SA, Tait-Wojno E, List JT, Kraus WL, Siepel A. <br>
+							Nature Ecology & Evolution (2018). <br>
+							Preprint: <a title="[bioRxiv]" href="http://www.biorxiv.org/content/early/2017/07/16/083212">bioRxiv.</a>
+							<BR><BR>
+
+							<strong>A unified architecture of transcriptional regulatory elements.</strong> <br>
+							Andersson R, Sandelin A, <span class="cgd">Danko CG</span>.<br>
+							<a title="[Full text]" href="http://www.sciencedirect.com/science/article/pii/S0168952515001043">Trends in Genetics</a> (2015). <br>
+							Preprint: <a title="[bioRxiv]" href="http://www.biorxiv.org/content/early/2015/05/26/019844">bioRxiv.</a>
+							<BR><BR>
+
+							<strong>Identification of active transcriptional regulatory elements from GRO-seq data. </strong> <br>
+							<span class="cgd">Danko CG</span>, Hyland SL, Core LJ, Martins AL, Waters CT, Lee HW, Cheung VG, Kraus WL, Lis JT, and Siepel A. <br>
+							<a title="[Full text]" href="http://www.nature.com/nmeth/journal/vaop/ncurrent/full/nmeth.3329.html">Nature Methods</a>  (2015). <br>
+							Preprint: <a title="[bioRxiv]" href="http://www.biorxiv.org/content/early/2014/11/12/011353">bioRxiv.</a> Software: <a title="[Github]" href="https://github.com/Danko-Lab/dREG">Github.</a>  Data: <a title="UCSC Track Hub" href="http://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&hubUrl=http://charlesdanko.com/hub/dreg/hub.txt">UCSC Track hub.</a>
+				
+							</p>
+							
 					</section>
 					</div>
-										
-					
+
+					<!-- Sidebar -->
+					<!--
+					<div id="sidebar" class="4u">
+						<section>
+							<header>
+								<h2>Recent Papers</h2>
+							</header>
+							<ul class="style">
+								<li>
+									<p class="posted">Aug 20th, 2018</p>
+									<img src="images/tinyiA.jpeg" alt="" />
+									<p class="text">Congradulations to Tinyi Chu and Paul Munn for passing their A-(qualifying) exams!</p>
+								</li>
+								<li>
+									<p class="posted">July 27th, 2016</p>
+									<img src="images/Choate-on-Lesch.png" alt="" />
+									<p class="text">Our comment on <a title="[Nature Genetics]" href="http://www.nature.com/ng/journal/v48/n8/full/ng.3591.html">Lesch et. al.</a> is now online in <a title="[Nature Genetics]" href="http://www.nature.com/ng/journal/v48/n8/full/ng.3628.html">Nature Genetics</a>!</p>
+								</li>
+								<li>
+									<p class="posted">August 2015</p>
+									<img src="images/GROcap.Paper.png" alt="" />
+									<p class="text">Opinion paper with <a title="[Andersson lab]" href="http://anderssonlab.org/">Robin Andersson</a> describing a unified model of regulatory elements now out at <a title="[Trends in Genetics]" href="http://www.sciencedirect.com/science/article/pii/S0168952515001043">TIG</a>. Preprint at <a title="[bioRxiv]" href="http://www.biorxiv.org/content/early/2015/05/26/019844">bioRxiv</a></p>
+								</li>
+							</ul>
+						</section>
+					</div>
+					-->
+
 				</div>
 			</div>
 		</div>

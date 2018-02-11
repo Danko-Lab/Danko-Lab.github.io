@@ -10,7 +10,7 @@
 
 	body
 	{
-		background: #FFFFFF;
+		background: #141414;
 	}
 
 	body,input,textarea,select
@@ -385,7 +385,7 @@
 	#main
 	{
 		position: relative;
-		background: #FFFFFF;
+		background: #fff;
 	}
 
 /*********************************************************************************/

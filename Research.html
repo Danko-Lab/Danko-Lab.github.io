@@ -75,7 +75,7 @@
 
 							Understanding the chain of molecular events that link DNA sequence ‘genotype’ to organism ‘phenotype’ is one of the most exciting frontiers in modern genetics. DNA sequences located in non-coding regions of the genome are critical drivers of phenotypic differences, both between and within species. <br><br>
 							Our objective is to discover the fundamental rules by which transcriptional changes arise from differences in DNA sequence and chromatin packaging within the nucleus. To achieve this goal we integrate genomic data collected using a combination of molecular assays (PRO-seq, RNA-seq, ATAC-seq, and Hi-C). Most of our work focuses on CD4+ T-cells, a lynchpin in the adaptive immune system undergoing rapid evolutionary changes that are relevant to autoimmune and allergic disorders. <br><br>
-							Our <a title="[Danko et. al., Evolution in ensembles of enhancers]" href="https://www.nature.com/articles/s41559-017-0447-5">most recent work</a> has found that although changes in distal regulatory elements arise rapidly, these changes frequently do not lead to measurable differences in the transcription of nearby genes. We found evidence that gene transcription is stabilized by multiple compensatory changes acting across ensembles of distal enhancers. This finding suggests a model of regulatory evolution in which changes in regulatory activities arise rapidly, and gene expression is held constant through widespread compensation between regulatory elements targeting each gene.
+							We <a title="[Danko et. al., Evolution in ensembles of enhancers]" href="https://www.nature.com/articles/s41559-017-0447-5">previously</a> found that although changes in distal regulatory elements arise rapidly, these changes frequently do not lead to measurable differences in the transcription of nearby genes. We found evidence that gene transcription is stabilized by multiple compensatory changes acting across ensembles of distal enhancers. This finding suggests a model of regulatory evolution in which changes in regulatory activities arise rapidly, and gene expression is held constant through widespread compensation between regulatory elements targeting each gene.
 							</p>
 
 							<BR>
@@ -83,7 +83,7 @@
 							<p class="text"><BR>
 							
 							Detecting biochemically active DNA sequences in a cell (one of the <a title="[Pisco et. al., Conceptual Confusion: the case of Epigenetics]" href="https://www.biorxiv.org/content/early/2016/05/12/053009">common definitions of a cell's “epigenome”</a>) is a major challenge in genomics.  Many approaches rely on using dozens of separate experimental assays, making the analysis of new cell systems expensive and time-consuming. We have recently demonstrated that RNA polymerase marks a surprisingly <a title="[Core, Martins et. al., PRO-cap]" href="http://www.nature.com/ng/journal/vaop/ncurrent/full/ng.3142.html">broad</a> <a title="[Andersson, Sandelin , Danko. Unified Model.]" href="http://www.sciencedirect.com/science/article/pii/S0168952515001043">variety</a> of functional elements across the genome. These functional elements can be recognized based on their characteristic “shapes” extracted from PRO-seq data using <a title="[Danko et. al., dREG paper]" href="http://www.nature.com/nmeth/journal/vaop/ncurrent/full/nmeth.3329.html">machine learning tools</a>. <br><br>
-							Our objective is to develop a computational toolkit that deconvolves a single PRO-seq assay into a rich source of information about multiple ‘layers’ of functional elements that are active in our genomes. We have developed a machine learning tool called <a title="[Danko et. al., dREG paper]" href="http://www.nature.com/nmeth/journal/vaop/ncurrent/full/nmeth.3329.html">dREG</a> which identifies the location of active regulatory DNA sequence elements using PRO-seq data as input. More recently, we have trained discriminative support vector machines to identify transcription factor binding sites with a high accuracy, and we have begun using transcription to guess or ‘impute’ the abundance of covalent modifications to core histones. These technologies allow comprehensive annotation of active functional elements in mammalian genomes using PRO-seq data alone.<br><br>
+							Our objective is to develop a computational toolkit that deconvolves a single PRO-seq assay into a rich source of information about multiple ‘layers’ of functional elements that are active in our genomes. We have developed a machine learning tool called <a title="[Danko et. al., dREG paper]" href="http://www.nature.com/nmeth/journal/vaop/ncurrent/full/nmeth.3329.html">dREG</a> which identifies the location of active regulatory DNA sequence elements using PRO-seq data as input. More recently, we introduced <a title="[Wang, Chivu et. al., dHIT paper]" href="https://www.nature.com/articles/s41588-022-01026-x">dHIT</a>, a discriminative support vector regression to guess or ‘impute’ the abundance of covalent modifications to core histones. These technologies allow comprehensive annotation of active functional elements in mammalian genomes using PRO-seq data alone.<br><br>
 							Finally, a core mission of the wet-lab is to extend run-on and sequencing assays to map the location of RNA polymerase across the genome in a wider range of biological conditions.  We have recently introduced a new run-on and sequencing variant called <a title="[Chu et. al., ChRO-seq paper]" href="http://www.biorxiv.org/content/early/2017/09/07/185991">ChRO-seq</a> to address the key problem with PRO-seq: namely that it requires a nuclear isolation, which can be challenging in complex tissue samples such as muscle or brain.  We have also made substantial progress on strategies to multiplex the PRO-seq and ChRO-seq assays using a 96-well plate format. Taken together, our efforts significantly expand the scope and range of applications in which PRO-seq can be applied.
 							</p>
 
@@ -91,6 +91,16 @@
 							<header><span class="subsectit">Core papers from the Danko lab.</span></header>
 							<p class="text">
 							<BR>
+
+							<strong>Genetic Dissection of the RNA Polymerase II Transcription Cycle.</strong> <br>
+							<span class="cgd">Chou SP</span>, <span class="cgd">Alexander AK</span>, <span class="cgd">Rice EJ</span>, <span class="cgd">Choate LA</span>, <span class="cgd">Danko CG</span>.<br>
+							<a title="[eLife]" href="https://elifesciences.org/articles/78458">eLife.</a> (2022).
+							<BR><BR>
+
+							<strong>Cell type and gene expression deconvolution with BayesPrism enables Bayesian integrative analysis across bulk and single-cell RNA sequencing in oncology.</strong> <br>
+							<span class="cgd">Chu T</span>, <span class="cgd">Wang Z</span>, Pe'er D, <span class="cgd">Danko CG</span>.<br>
+							<a title="[Nature Cancer]" href="https://www.nature.com/articles/s43018-022-00356-3">Nature Cancer.</a> (2022).
+							<BR><BR>
 
 							<strong>Prediction of histone post-translational modification patterns based on nascent transcription data.</strong> <br>
 							<span class="cgd">Wang Z</span>, <span class="cgd">Chivu AG</span>, <span class="cgd">Choate LA</span>, <span class="cgd">Rice EJ</span>, Miller DC, <span class="cgd">Chu T</span>, <span class="cgd">Chou S</span>, Kingsley NB, Petersen JL, Finno CJ, Bellone RR, Antczak DF, Lis JT, <span class="cgd">Danko CG</span>.<br> 
@@ -143,6 +153,21 @@
 								</li>
 
 								<li>
+									<p class="posted">September 2022</p>
+
+									<strong>RNA polymerase II and PARP1 shape enhancer-promoter contacts.</strong>
+									<iframe width="420" height="315" src="https://www.youtube.com/embed/854S2woAWJw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+								</li>
+
+
+								<li>
+									<p class="posted">August 2022</p>
+
+									<strong>Genomic tools to explore changes in disease.</strong>
+									<iframe width="420" height="315" src="https://www.youtube.com/embed/ZkanYbDTMH0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+								</li>
+
+								<li>
 									<p class="posted">March 2022</p>
 
 									<img src="images/HistoneMarkImputationPaper.png" width="420" alt="" />
@@ -178,26 +203,6 @@
 									</iframe>
 								</li>
 
-								<li>
-									<p class="posted">January 2018</p>
-									<img src="images/NHP-Paper-Redundancy.png" width="420" alt="" />
-									<p class="text"><a title="[Nature Eco & Evo]" href="https://www.nature.com/articles/s41559-017-0447-5">Dynamic evolution of regulatory element ensembles in primate CD4+ T cells.</a> Our research paper on the molecular mechanisms behind evolutionary changes in transcription, focusing on CD4+ T-cells in primates.</p> 
-									<strong>Highlights:</strong><br>
-									* Evolutionary changes at enhancers correlate with distance to genes and chromatin interactions.<br>
-									* Enhancers/ promoters spread across a locus undergo selective pressures as a unit, or an "ensemble".<br>
-									* Changes often preserve transcriptional output at genes.<br>
-									* Experiments confirm multiple substitutions that contribute to human-specific transcription of SGPP2.<br>
-								</li>
-
-								<li>
-									<p class="posted">August 2015</p>
-									<img src="images/UnifiedArchitecture.png" width="420" alt="" />
-									<p class="text">Opinion paper arguing for a <a title="[Trends in Genetics]" href="http://www.sciencedirect.com/science/article/pii/S0168952515001043">unified model of regulatory elements</a>.</p> 
-									<strong>Highlights:</strong><br>
-									* Transcription marks both enhancers and promoters.<br>
-									* Some gene promtoers enhance transcription at distal sites.<br>
-									* The function of a "regulatory element" is context dependent.<br>
-								</li>
 							</ul>
 						</section>
 					</div>

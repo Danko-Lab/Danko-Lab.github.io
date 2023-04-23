@@ -1,0 +1,65 @@
+{
+  "bank": {
+    "users": [
+      {
+        "name": "Gwen",
+        "transactions": [
+          {
+            "date": "2023-01-01",
+            "type": "deposit",
+            "amount": "100.00"
+          },
+          {
+            "date": "2023-02-01",
+            "type": "deposit",
+            "amount": "50.00"
+          },
+          {
+            "date": "2023-03-01",
+            "type": "withdrawal",
+            "amount": "25.00"
+          }
+        ],
+        "interestRates": [
+          {
+            "startDate": "2023-01-01",
+            "endDate": "2023-02-28",
+            "rate": "0.02"
+          },
+          {
+            "startDate": "2023-03-01",
+            "endDate": "2023-12-31",
+            "rate": "0.03"
+          }
+        ]
+      },
+      {
+        "name": "Charles",
+        "transactions": [
+          {
+            "date": "2023-01-15",
+            "type": "deposit",
+            "amount": "200.00"
+          },
+          {
+            "date": "2023-02-20",
+            "type": "withdrawal",
+            "amount": "50.00"
+          }
+        ],
+        "interestRates": [
+          {
+            "startDate": "2023-01-01",
+            "endDate": "2023-02-28",
+            "rate": "0.01"
+          },
+          {
+            "startDate": "2023-03-01",
+            "endDate": "2023-12-31",
+            "rate": "0.025"
+          }
+        ]
+      }
+    ]
+  }
+}

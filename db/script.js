@@ -1,19 +1,28 @@
 /********************************************************************
  * Kid's Bank App
  *
- * Reads an XML file containing users, transactions, and interest rate
- * changes. Implements three main views: Balance, History, Projection.
- * 
- * Includes simple X/Y axes for the History and Projection charts.
+ * Reads an XML file containing:
+ *   <bank>
+ *     <users>
+ *       <user>
+ *         <name>...</name>
+ *         <transactions>...</transactions>
+ *         <interestRates>...</interestRates>
+ *       </user>
+ *       ...
+ *     </users>
+ *   </bank>
  ********************************************************************/
 
 /* Global Data Structures */
 let usersData = [];
 let currentUser = null;
 
-// On window load, fetch and parse XML, then populate user dropdown
+// On window load, fetch and parse XML, then populate the user dropdown
 window.onload = function () {
-  const xmlFileURL = "https://www.dankolab.org/files/dbstatefile.xml"; 
+  // Replace URL with your actual file location, e.g.:
+  const xmlFileURL = "https://www.dankolab.org/files/dbstatefile.xml";
+  
   fetch(xmlFileURL)
     .then((res) => {
       if (!res.ok) {
@@ -24,12 +33,12 @@ window.onload = function () {
     .then((xmlText) => {
       const parser = new DOMParser();
       const xmlDoc = parser.parseFromString(xmlText, "text/xml");
-      parseXML(xmlDoc);
+      parseBankXML(xmlDoc);
       populateUserSelect(usersData);
     })
     .catch((err) => {
       console.error("Error fetching/parsing XML:", err);
-      alert("Could not load the user data from the XML file.");
+      alert("Could not load user data from the XML file.");
     });
 
   // Set up event listeners for buttons
@@ -43,49 +52,66 @@ window.onload = function () {
 };
 
 /********************************************************************
- * 1) XML Parsing
- *    Parse the XML to build an in-memory representation of:
- *       - Users
- *       - Transactions (deposits/withdrawals)
- *       - Interest rate changes
+ * 1) parseBankXML: Parse the <bank> -> <users> -> <user> structure
  ********************************************************************/
-function parseXML(xmlDoc) {
-  // Fetch all <user> nodes
-  const userNodes = xmlDoc.getElementsByTagName("user");
+function parseBankXML(xmlDoc) {
+  // Find <users> parent
+  const usersParent = xmlDoc.getElementsByTagName("users")[0];
+  if (!usersParent) {
+    console.error("No <users> element found in XML.");
+    return;
+  }
+
+  // Grab all <user> elements
+  const userNodes = usersParent.getElementsByTagName("user");
+
   for (let i = 0; i < userNodes.length; i++) {
     const userNode = userNodes[i];
-    
-    const userId = userNode.getAttribute("id") || "";
-    // We will use the <username> tag for the displayed name.
-    const userNameTag = userNode.getElementsByTagName("username")[0];
-    const userName = userNameTag ? userNameTag.textContent : `User ${i}`;
 
-    // Transactions
-    const transactionNodes = userNode.getElementsByTagName("transaction");
+    // (A) Read <name>
+    const nameNode = userNode.getElementsByTagName("name")[0];
+    const userName = nameNode ? nameNode.textContent : `User ${i+1}`;
+
+    // (B) Parse <transactions> 
     const transactions = [];
-    for (let t = 0; t < transactionNodes.length; t++) {
-      const transNode = transactionNodes[t];
-      const type = transNode.getAttribute("type");  // deposit or withdraw
-      const amount = parseFloat(transNode.getAttribute("amount")) || 0.0;
-      const date = transNode.getAttribute("date") || "";
-      transactions.push({ type, amount, date });
+    const transactionsParent = userNode.getElementsByTagName("transactions")[0];
+    if (transactionsParent) {
+      const transactionNodes = transactionsParent.getElementsByTagName("transaction");
+      for (let t = 0; t < transactionNodes.length; t++) {
+        const txNode = transactionNodes[t];
+        
+        const date = txNode.getElementsByTagName("date")[0]?.textContent || "";
+        const type = txNode.getElementsByTagName("type")[0]?.textContent || "";
+        const amountStr = txNode.getElementsByTagName("amount")[0]?.textContent || "0";
+        const amount = parseFloat(amountStr) || 0;
+
+        transactions.push({ date, type, amount });
+      }
     }
-    
-    // Interest Rate Changes
-    const interestNodes = userNode.getElementsByTagName("interest");
-    const interestChanges = [];
-    for (let k = 0; k < interestNodes.length; k++) {
-      const interestNode = interestNodes[k];
-      const date = interestNode.getAttribute("date") || "";
-      const rate = parseFloat(interestNode.getAttribute("rate")) || 0.0;
-      interestChanges.push({ date, rate });
+
+    // (C) Parse <interestRates>
+    // Each <interestRate> has <startDate>, <endDate>, <rate>
+    const interestRates = [];
+    const interestRatesParent = userNode.getElementsByTagName("interestRates")[0];
+    if (interestRatesParent) {
+      const interestRateNodes = interestRatesParent.getElementsByTagName("interestRate");
+      for (let r = 0; r < interestRateNodes.length; r++) {
+        const rateNode = interestRateNodes[r];
+
+        const startDate = rateNode.getElementsByTagName("startDate")[0]?.textContent || "";
+        const endDate = rateNode.getElementsByTagName("endDate")[0]?.textContent || "";
+        const rateStr = rateNode.getElementsByTagName("rate")[0]?.textContent || "0";
+        const rate = parseFloat(rateStr) || 0;
+
+        interestRates.push({ startDate, endDate, rate });
+      }
     }
-    
+
+    // Push user data object
     usersData.push({
-      id: userId,
-      username: userName,
+      name: userName,
       transactions: transactions,
-      interestChanges: interestChanges,
+      interestRates: interestRates
     });
   }
 }
@@ -105,10 +131,10 @@ function populateUserSelect(users) {
     return;
   }
 
-  users.forEach((user) => {
+  users.forEach((user, index) => {
     const option = document.createElement("option");
-    option.value = user.id;
-    option.textContent = user.username;
+    option.value = index;  // We'll refer to user by index
+    option.textContent = user.name;
     userSelect.appendChild(option);
   });
 }
@@ -118,71 +144,71 @@ function populateUserSelect(users) {
  ********************************************************************/
 function handleLogin() {
   const userSelect = document.getElementById("user-select");
-  const userId = userSelect.value;
+  const selectedIndex = userSelect.value;
   
-  currentUser = usersData.find((u) => u.id === userId);
+  // In this revised code, we store the user index in the <option> value
+  currentUser = usersData[selectedIndex];
 
   if (!currentUser) {
     alert("User not found. Please select a valid account.");
     return;
   }
 
-  // Show the main menu
+  // Hide login, show main menu
   document.getElementById("login-section").style.display = "none";
   document.getElementById("main-menu").style.display = "block";
 
-  // Default to showing Balance
+  // Show Balance by default
   showBalance();
 }
 
 /********************************************************************
- * 4) Compute Current Balance and Current Interest Rate
+ * 4) Compute Current Balance and "Current" Interest Rate
+ *
+ *   - We do a simple approach here: 
+ *     * We only look at the total deposits & withdrawals to get a 
+ *       final balance (no daily compounding).
+ *     * For the "current interest rate," we look for the rate 
+ *       bracket that includes today's date (or if the data is
+ *       purely historical, we pick the last bracket).
+ *
+ *   Adjust or refine as your actual use-case demands.
  ********************************************************************/
 function computeBalanceAndRate(user) {
   if (!user) return { balance: 0, rate: 0 };
-  
-  // Sort all transactions by date
-  const sortedTransactions = [...user.transactions].sort((a, b) => new Date(a.date) - new Date(b.date));
-  // Sort interest changes by date
-  const sortedInterestChanges = [...user.interestChanges].sort((a, b) => new Date(a.date) - new Date(b.date));
-  
-  // We'll track the balance as we go, applying interest when changes occur.
+
+  // 4A) Sum all deposits/withdrawals
   let balance = 0;
-  let currentRate = 0;
-  
-  // Combine all relevant changes (transactions + interest changes) in chronological order
-  let combinedEvents = [];
-
-  sortedTransactions.forEach((t) => {
-    combinedEvents.push({
-      date: t.date,
-      type: t.type,
-      amount: t.amount,
-      eventType: "transaction", // deposit or withdrawal
-    });
-  });
-  sortedInterestChanges.forEach((ic) => {
-    combinedEvents.push({
-      date: ic.date,
-      rate: ic.rate,
-      eventType: "interest",
-    });
-  });
-
-  // Sort combined events by date
-  combinedEvents.sort((a, b) => new Date(a.date) - new Date(b.date));
-
-  combinedEvents.forEach((event) => {
-    if (event.eventType === "transaction") {
-      if (event.type === "deposit") {
-        balance += event.amount;
-      } else if (event.type === "withdraw") {
-        balance -= event.amount;
-      }
-    } else if (event.eventType === "interest") {
-      currentRate = event.rate;
+  user.transactions.forEach(tx => {
+    if (tx.type.toLowerCase() === "deposit") {
+      balance += tx.amount;
+    } else if (tx.type.toLowerCase() === "withdrawal") {
+      balance -= tx.amount;
     }
   });
+
+  // 4B) Find "current" interest rate by picking the bracket 
+  //     that includes today's date (or fallback to the last bracket)
+  const today = new Date();
+  let currentRate = 0;
+  let matchedBracket = null;
+
+  for (const bracket of user.interestRates) {
+    const start = new Date(bracket.startDate);
+    const end = new Date(bracket.endDate);
+
+    if (start <= today && today <= end) {
+      currentRate = bracket.rate;
+      matchedBracket = bracket;
+      break;
+    }
+  }
+
+  // If no bracket matched today's date, we may just choose 
+  // the last bracket if that fits your logic:
+  if (!matchedBracket && user.interestRates.length > 0) {
+    currentRate = user.interestRates[user.interestRates.length - 1].rate;
+  }
 
   return { balance, rate: currentRate };
 }
@@ -203,17 +229,17 @@ function showBalance() {
 
 /********************************************************************
  * 6) Show History
- *    - Graph of balance over time
+ *    - Graph of deposits/withdrawals over time (no daily interest).
  *    - Table of transactions
  ********************************************************************/
 function showHistory() {
   hideAllSections();
   document.getElementById("history-section").style.display = "block";
 
-  // 6A) Render transaction table
+  // A) Render transaction table
   renderTransactionTable();
 
-  // 6B) Render history graph
+  // B) Render history graph
   renderHistoryGraph();
 }
 
@@ -246,7 +272,7 @@ function renderTransactionTable() {
   });
 }
 
-/* 6B) Render history graph with simple axes */
+/* 6B) Render history graph with basic axes */
 function renderHistoryGraph() {
   if (!currentUser) return;
   
@@ -256,60 +282,37 @@ function renderHistoryGraph() {
   // Clear previous drawing
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Sort transactions and interest changes by date
-  let combinedEvents = [];
-  currentUser.transactions.forEach((t) => {
-    combinedEvents.push({
-      date: t.date,
-      type: t.type,
-      amount: t.amount,
-      eventType: "transaction",
-    });
-  });
-  currentUser.interestChanges.forEach((ic) => {
-    combinedEvents.push({
-      date: ic.date,
-      rate: ic.rate,
-      eventType: "interest",
-    });
-  });
-  combinedEvents.sort((a, b) => new Date(a.date) - new Date(b.date));
+  // Sort transactions by date
+  const sortedTransactions = [...currentUser.transactions].sort(
+    (a, b) => new Date(a.date) - new Date(b.date)
+  );
 
-  // Step through each event, compute the balance for that day
-  let balance = 0;
-  let dataPoints = [];
-  let currentRate = 0;
-
-  combinedEvents.forEach((event) => {
-    if (event.eventType === "transaction") {
-      if (event.type === "deposit") {
-        balance += event.amount;
-      } else {
-        balance -= event.amount;
-      }
-      dataPoints.push({ date: event.date, balance });
-    } else if (event.eventType === "interest") {
-      currentRate = event.rate; // not specifically used for daily compounding
-    }
-  });
-
-  // If no events, no data to graph
-  if (dataPoints.length === 0) {
-    return;
+  if (sortedTransactions.length === 0) {
+    return; // Nothing to plot
   }
 
-  // Convert each date to a numeric time for axis scaling
-  dataPoints.forEach(dp => {
-    dp.time = new Date(dp.date).getTime();
+  // We'll build data points by stepping transaction by transaction
+  let balance = 0;
+  let dataPoints = [];
+
+  sortedTransactions.forEach((tx) => {
+    if (tx.type.toLowerCase() === "deposit") {
+      balance += tx.amount;
+    } else if (tx.type.toLowerCase() === "withdrawal") {
+      balance -= tx.amount;
+    }
+    // push the (date -> balance) record
+    dataPoints.push({ date: new Date(tx.date), balance });
   });
-  
-  // Determine min/max date and balance
-  const minDate = Math.min(...dataPoints.map(dp => dp.time));
-  const maxDate = Math.max(...dataPoints.map(dp => dp.time));
+
+  // Determine min/max date
+  const minDate = dataPoints[0].date.getTime();
+  const maxDate = dataPoints[dataPoints.length - 1].date.getTime();
+  // Determine min/max balance
   const minBal = Math.min(...dataPoints.map(dp => dp.balance));
   const maxBal = Math.max(...dataPoints.map(dp => dp.balance));
 
-  // Set up margins for axes
+  // Margins
   const leftMargin = 50;
   const bottomMargin = 25;
   const topMargin = 10;
@@ -321,34 +324,35 @@ function renderHistoryGraph() {
   // Draw axes
   ctx.strokeStyle = "#000";
   ctx.lineWidth = 1;
+
   // Y-axis
   ctx.beginPath();
   ctx.moveTo(leftMargin, topMargin);
   ctx.lineTo(leftMargin, topMargin + drawHeight);
   ctx.stroke();
+
   // X-axis
   ctx.beginPath();
   ctx.moveTo(leftMargin, topMargin + drawHeight);
   ctx.lineTo(leftMargin + drawWidth, topMargin + drawHeight);
   ctx.stroke();
 
-  // Function to convert a date -> x coordinate
+  // Converters for date -> x and balance -> y
   function getXCoord(dateVal) {
-    if (maxDate === minDate) return leftMargin; // edge case: no variation
+    if (maxDate === minDate) return leftMargin;
     return leftMargin + ((dateVal - minDate) / (maxDate - minDate)) * drawWidth;
   }
-  // Function to convert balance -> y coordinate
   function getYCoord(balVal) {
-    if (maxBal === minBal) return topMargin + drawHeight; // edge case: no variation
+    if (maxBal === minBal) return topMargin + drawHeight;
     return topMargin + drawHeight - ((balVal - minBal) / (maxBal - minBal)) * drawHeight;
   }
 
-  // Plot line
+  // Plot the line
   ctx.beginPath();
   ctx.strokeStyle = "#007bff";
   ctx.lineWidth = 2;
   dataPoints.forEach((dp, i) => {
-    const xPos = getXCoord(dp.time);
+    const xPos = getXCoord(dp.date.getTime());
     const yPos = getYCoord(dp.balance);
     if (i === 0) {
       ctx.moveTo(xPos, yPos);
@@ -358,16 +362,21 @@ function renderHistoryGraph() {
   });
   ctx.stroke();
 
-  // Draw simple numeric labels on x-axis (start and end date)
+  // Optional: Label the axis min/max
   ctx.fillStyle = "#000";
   ctx.font = "12px sans-serif";
-  // min date label
-  ctx.fillText(new Date(minDate).toLocaleDateString(), leftMargin, topMargin + drawHeight + 15);
-  // max date label (shift left by ~100px)
-  const maxDateLabel = new Date(maxDate).toLocaleDateString();
-  ctx.fillText(maxDateLabel, leftMargin + drawWidth - 80, topMargin + drawHeight + 15);
-
-  // Draw simple numeric labels on y-axis (min and max balance)
+  // X-axis date labels (start + end)
+  ctx.fillText(
+    dataPoints[0].date.toLocaleDateString(),
+    leftMargin,
+    topMargin + drawHeight + 15
+  );
+  ctx.fillText(
+    dataPoints[dataPoints.length - 1].date.toLocaleDateString(),
+    leftMargin + drawWidth - 80,
+    topMargin + drawHeight + 15
+  );
+  // Y-axis balance labels (min + max)
   ctx.fillText(minBal.toFixed(2), 5, topMargin + drawHeight);
   ctx.fillText(maxBal.toFixed(2), 5, topMargin + 10);
 }
@@ -375,6 +384,7 @@ function renderHistoryGraph() {
 /********************************************************************
  * 7) Show Projection
  *    - Graph of how principal grows over a user-defined number of months
+ *      using the "current" interest rate from computeBalanceAndRate.
  ********************************************************************/
 function showProjection() {
   hideAllSections();
@@ -395,7 +405,8 @@ function updateProjection() {
   // Get the current balance and rate
   const { balance: currentBalance, rate } = computeBalanceAndRate(currentUser);
   
-  // We'll convert annual rate to monthly rate:
+  // We'll convert the annual rate to a rough monthly rate:
+  // For a small demonstration, we assume simple monthly compounding.
   const monthlyRate = Math.pow(1 + rate, 1 / 12) - 1;
   
   // Generate data points for each month
@@ -410,13 +421,13 @@ function updateProjection() {
   // If there's no data, exit
   if (dataPoints.length === 0) return;
   
-  // We’ll plot the month on the x-axis and the balance on the y-axis
+  // Determine min/max months and balances
   const minMonth = 0;
   const maxMonth = months;
   const minBal = Math.min(...dataPoints.map(dp => dp.balance));
   const maxBal = Math.max(...dataPoints.map(dp => dp.balance));
 
-  // Setup margins
+  // Margins
   const leftMargin = 50;
   const bottomMargin = 25;
   const topMargin = 10;
@@ -428,11 +439,13 @@ function updateProjection() {
   // Draw axes
   ctx.strokeStyle = "#000";
   ctx.lineWidth = 1;
+
   // Y-axis
   ctx.beginPath();
   ctx.moveTo(leftMargin, topMargin);
   ctx.lineTo(leftMargin, topMargin + drawHeight);
   ctx.stroke();
+
   // X-axis
   ctx.beginPath();
   ctx.moveTo(leftMargin, topMargin + drawHeight);
@@ -449,7 +462,7 @@ function updateProjection() {
     return topMargin + drawHeight - ((balVal - minBal) / (maxBal - minBal)) * drawHeight;
   }
 
-  // Draw projection line
+  // Plot the line
   ctx.beginPath();
   ctx.strokeStyle = "green";
   ctx.lineWidth = 2;
@@ -464,15 +477,15 @@ function updateProjection() {
   });
   ctx.stroke();
 
-  // Draw axis labels
+  // Simple axis labels
   ctx.fillStyle = "#000";
   ctx.font = "12px sans-serif";
-
-  // X-axis: min and max month
+  
+  // X-axis: min & max month
   ctx.fillText(`${minMonth} mo`, leftMargin, topMargin + drawHeight + 15);
   ctx.fillText(`${maxMonth} mo`, leftMargin + drawWidth - 30, topMargin + drawHeight + 15);
 
-  // Y-axis: min and max balance
+  // Y-axis: min & max balance
   ctx.fillText(minBal.toFixed(2), 5, topMargin + drawHeight);
   ctx.fillText(maxBal.toFixed(2), 5, topMargin + 10);
 }

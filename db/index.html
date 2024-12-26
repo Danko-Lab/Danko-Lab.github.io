@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Kid's Bank App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- App Container -->
+  <div id="app-container">
+    
+    <!-- Login Section -->
+    <div id="login-section">
+      <h1>Welcome to Kid's Bank</h1>
+      <label for="user-select">Select Account:</label>
+      <select id="user-select"></select>
+      <button id="login-button">Log In</button>
+    </div>
+
+    <!-- Main Menu & Display Section (hidden by default) -->
+    <div id="main-menu" style="display: none;">
+      <div id="menu-buttons">
+        <button id="balance-btn">Balance</button>
+        <button id="history-btn">History</button>
+        <button id="projection-btn">Projection</button>
+      </div>
+
+      <!-- Content Sections -->
+      <div id="content-area">
+        <!-- Balance Section -->
+        <div id="balance-section" class="section" style="display: none;">
+          <h2>Balance Information</h2>
+          <p id="balance-details"></p>
+        </div>
+
+        <!-- History Section -->
+        <div id="history-section" class="section" style="display: none;">
+          <h2>History</h2>
+          <!-- Canvas for the History Graph -->
+          <canvas id="history-graph" width="600" height="300"></canvas>
+          <h3>Transactions</h3>
+          <table id="history-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <!-- Projection Section -->
+        <div id="projection-section" class="section" style="display: none;">
+          <h2>Projection</h2>
+          <label for="projection-months">Months to project:</label>
+          <input type="number" id="projection-months" value="12" min="1" />
+          <button id="projection-update-btn">Update</button>
+
+          <!-- Canvas for the Projection Graph -->
+          <canvas id="projection-graph" width="600" height="300"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load JS at the end of the body for performance -->
+  <script src="script.js"></script>
+</body>
+</html>

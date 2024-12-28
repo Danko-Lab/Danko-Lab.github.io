@@ -2,34 +2,39 @@
 <bank>
   <users>
     <user>
-      <name>Gwen</name>
+      <name>Grahe</name>
       <transactions>
         <transaction>
-          <date>2023-01-01</date>
+          <date>2024-11-23</date>
           <type>deposit</type>
-          <amount>100.00</amount>
+          <amount>41.00</amount>
         </transaction>
         <transaction>
-          <date>2023-02-01</date>
+          <date>2024-11-24</date>
           <type>deposit</type>
-          <amount>50.00</amount>
+          <amount>10.00</amount>
         </transaction>
         <transaction>
-          <date>2023-03-01</date>
+          <date>2024-12-01</date>
           <type>withdrawal</type>
-          <amount>25.00</amount>
+          <amount>6.00</amount>
+        </transaction>
+        <transaction>
+          <date>2024-12-25</date>
+          <type>deposit</type>
+          <amount>10.00</amount>
         </transaction>
       </transactions>
       <interestRates>
         <interestRate>
-          <startDate>2023-01-01</startDate>
-          <endDate>2023-02-28</endDate>
+          <startDate>2024-01-01</startDate>
+          <endDate>2024-10-31</endDate>
           <rate>0.02</rate>
         </interestRate>
         <interestRate>
-          <startDate>2023-03-01</startDate>
-          <endDate>2023-12-31</endDate>
-          <rate>0.03</rate>
+          <startDate>2024-11-01</startDate>
+          <endDate>2025-12-31</endDate>
+          <rate>0.10</rate>
         </interestRate>
       </interestRates>
     </user>

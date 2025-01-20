@@ -24,6 +24,11 @@
           <type>deposit</type>
           <amount>10.00</amount>
         </transaction>
+        <transaction>
+          <date>2025-01-19</date>
+          <type>deposit</type>
+          <amount>29.50</amount>
+        </transaction>        
       </transactions>
       <interestRates>
         <interestRate>

@@ -40,48 +40,48 @@ window.onload = () => {
 /* -----------------------------------------------------------------
  * 1.  XML parsing
  * ----------------------------------------------------------------*/
-function parseBankXML(xmlDoc) {
-  /* 1A – global <interestRate> list (optional) */
-  const globalRateNodes = Array.from(xmlDoc.getElementsByTagName("interestRates"))
-    .filter(node => node.parentElement.tagName.toLowerCase() !== "user");   // keep only root‑level
-  if (globalRateNodes.length) {
-    globalRateNodes[0].querySelectorAll("interestRate").forEach(r => {
-      globalRates.push({
-        start : r.querySelector("start")?.textContent ?? "",
-        end   : r.querySelector("end")  ?.textContent ?? "",
-        rate  : +r.querySelector("rate")?.textContent || 0
-      });
-    });
-  }
+function parseBankXML(xmlDoc){
+  /* helper to read either <startDate> or <start> etc. */
+  const pick = (node, ...tags) =>
+    tags.reduce((v,t)=>v||node.getElementsByTagName(t)[0]?.textContent,"");
 
-  /* 1B – users */
-  const userNodes = xmlDoc.getElementsByTagName("user");
-  for (let i=0;i<userNodes.length;i++) {
-    const u      = userNodes[i];
-    const name   = u.querySelector("name")?.textContent ?? `User ${i+1}`;
+  /* (A) global interest‑rates (optional) */
+  xmlDoc.querySelectorAll("bank > interestRates > interestRate").forEach(r=>{
+    globalRates.push({
+      start : pick(r,"start","startDate","from"),
+      end   : pick(r,"end","endDate","to"),
+      rate  : +pick(r,"rate") || 0
+    });
+  });
+
+  /* (B) users */
+  xmlDoc.querySelectorAll("bank > users > user").forEach(u=>{
+    const name = pick(u,"name") || "Unnamed";
 
     /* transactions */
-    const transactions = [];
-    u.querySelectorAll("transactions > transaction").forEach(t => {
-      transactions.push({
-        date   : t.querySelector("date" )?.textContent ?? "",
-        type   : t.querySelector("type" )?.textContent.toLowerCase() ?? "",
-        amount : +t.querySelector("amount")?.textContent || 0
+    const tx=[];
+    u.querySelectorAll("transactions > transaction").forEach(t=>{
+      tx.push({
+        date   : pick(t,"date"),
+        type   : pick(t,"type").toLowerCase(),
+        amount : +pick(t,"amount") || 0
       });
     });
 
-    /* user‑specific rates (still supported) */
-    const rates = [];
-    u.querySelectorAll("interestRates > interestRate").forEach(r => {
-      rates.push({
-        start : r.querySelector("start")?.textContent ?? "",
-        end   : r.querySelector("end")  ?.textContent ?? "",
-        rate  : +r.querySelector("rate")?.textContent || 0
+    /* user‑specific rates */
+    const rates=[];
+    //  either wrapped in <interestRates> … or flat under <user>
+    (u.querySelectorAll("interestRates > interestRate, > interestRate")||[])
+      .forEach(r=>{
+        rates.push({
+          start : pick(r,"start","startDate"),
+          end   : pick(r,"end","endDate"),
+          rate  : +pick(r,"rate") || 0
+        });
       });
-    });
 
-    usersData.push({name, transactions, interestRates: rates});
-  }
+    usersData.push({name,transactions:tx,interestRates:rates});
+  });
 }
 
 /* -----------------------------------------------------------------
@@ -246,31 +246,60 @@ function renderTransactionTable(){
 
 /* ---------- History graph (unchanged except using interest‑inclusive data) ---------- */
 function renderHistoryGraph(){
-  if (!currentUser) return;
+  if(!currentUser) return;
 
-  const canvas = document.getElementById("history-graph");
-  const ctx    = canvas.getContext("2d");
+  const canvas = document.getElementById("history-graph"),
+      ctx    = canvas.getContext("2d");
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  const {interestTx} = computeInterestData(currentUser);
-  const combined     = [...currentUser.transactions, ...interestTx]
-    .sort((a,b)=>new Date(a.date)-new Date(b.date));
+  const {interestTx}=computeInterestData(currentUser);
+  const tx  = [...currentUser.transactions,...interestTx]
+              .sort((a,b)=>new Date(a.date)-new Date(b.date));
+  if(!tx.length) return;
 
-  if (!combined.length) return;
-
-  /* Build running balance series */
-  let bal = 0;
-  const dataPoints = [];
-  combined.forEach(tx=>{
-    if (tx.type==="deposit")        bal += tx.amount;
-    else if (tx.type==="debit" || tx.type==="withdrawal") bal -= tx.amount;
-    else if (tx.type==="interest")  bal += tx.amount;
-    dataPoints.push({date:new Date(tx.date), bal});
+  /* build running‑balance series */
+  let bal=0, series=[];
+  tx.forEach(t=>{
+    if(t.type==="deposit") bal+=t.amount;
+    else if(t.type==="withdrawal"||t.type==="debit") bal-=t.amount;
+    else if(t.type==="interest") bal+=t.amount;
+    series.push({date:new Date(t.date),bal});
   });
 
-  /* …(existing plotting code unchanged – omitted here for brevity)… */
-  /* For the sake of space we skip re‑emitting the canvas drawing logic.
-     Paste the original renderHistoryGraph body below this comment. */
+  /* axis limits */
+  const minX=series[0].date.getTime(),
+        maxX=series[series.length-1].date.getTime(),
+        minY=Math.min(...series.map(p=>p.bal)),
+        maxY=Math.max(...series.map(p=>p.bal));
+
+  const LM=50, RM=10, TM=10, BM=30,
+        W=canvas.width-LM-RM,
+        H=canvas.height-TM-BM;
+
+  /* axes */
+  ctx.strokeStyle="#000"; ctx.lineWidth=1;
+  // y
+  ctx.beginPath(); ctx.moveTo(LM,TM); ctx.lineTo(LM,TM+H); ctx.stroke();
+  // x
+  ctx.beginPath(); ctx.moveTo(LM,TM+H); ctx.lineTo(LM+W,TM+H); ctx.stroke();
+
+  /* converters */
+  const xCoord=d=>LM+((d-minX)/(maxX-minX))*W;
+  const yCoord=v=>TM+H-((v-minY)/(maxY-minY))*H;
+
+  /* plot */
+  ctx.beginPath(); ctx.strokeStyle="#007bff"; ctx.lineWidth=2;
+  series.forEach((p,i)=>{
+    const x=xCoord(p.date.getTime()), y=yCoord(p.bal);
+    i?ctx.lineTo(x,y):ctx.moveTo(x,y);
+  });
+  ctx.stroke();
+
+  /* simple axis labels */
+  ctx.fillStyle="#000"; ctx.font="12px sans-serif";
+  ctx.fillText(series[0].date.toLocaleDateString(),LM,TM+H+15);
+  ctx.fillText(series.at(-1).date.toLocaleDateString(),LM+W-80,TM+H+15);
+  ctx.fillText(minY.toFixed(2),5,TM+H); ctx.fillText(maxY.toFixed(2),5,TM+10);
 }
 
 /* ---------- Projection view ---------- */
@@ -281,26 +310,52 @@ function showProjection(){
 }
 
 function updateProjection(){
-  if (!currentUser) return;
+  if(!currentUser) return;
 
-  const months  = +(document.getElementById("projection-months").value) || 12;
-  const canvas  = document.getElementById("projection-graph");
-  const ctx     = canvas.getContext("2d");
+  const months = +(document.getElementById("projection-months").value)||12;
+  const canvas = document.getElementById("projection-graph"),
+        ctx    = canvas.getContext("2d");
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  const {curBal,curRate} = computeInterestData(currentUser);
-  const mRate   = Math.pow(1+curRate,1/12)-1;
+  const {curBal,curRate}=computeInterestData(currentUser);
+  const mRate=Math.pow(1+curRate,1/12)-1;
 
-  /* Build projection */
-  const pts = [];
-  let bal   = curBal;
-  for (let m=0;m<=months;m++){
+  /* build projection series */
+  let pts=[], bal=curBal;
+  for(let m=0;m<=months;m++){
     pts.push({m,bal});
-    bal += bal*mRate;
+    bal+=bal*mRate;
   }
 
-  /* …(existing drawing code unchanged – like the original updateProjection)… */
-  /* Again, to keep the file succinct, reuse your previous canvas code here. */
+  /* axis limits */
+  const minX=0,maxX=months,
+        minY=Math.min(...pts.map(p=>p.bal)),
+        maxY=Math.max(...pts.map(p=>p.bal));
+
+  const LM=50,RM=10,TM=10,BM=30, W=canvas.width-LM-RM,H=canvas.height-TM-BM;
+
+  /* axes */
+  ctx.strokeStyle="#000"; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(LM,TM); ctx.lineTo(LM,TM+H); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(LM,TM+H); ctx.lineTo(LM+W,TM+H); ctx.stroke();
+
+  /* converters */
+  const xCoord=m=>LM+((m-minX)/(maxX-minX))*W;
+  const yCoord=v=>TM+H-((v-minY)/(maxY-minY))*H;
+
+  /* line */
+  ctx.beginPath(); ctx.strokeStyle="green"; ctx.lineWidth=2;
+  pts.forEach((p,i)=>{
+    const x=xCoord(p.m), y=yCoord(p.bal);
+    i?ctx.lineTo(x,y):ctx.moveTo(x,y);
+  });
+  ctx.stroke();
+
+  ctx.fillStyle="#000"; ctx.font="12px sans-serif";
+  ctx.fillText(`${minX} mo`,LM,TM+H+15);
+  ctx.fillText(`${maxX} mo`,LM+W-30,TM+H+15);
+  ctx.fillText(minY.toFixed(2),5,TM+H);
+  ctx.fillText(maxY.toFixed(2),5,TM+10);
 }
 
 /* -----------------------------------------------------------------

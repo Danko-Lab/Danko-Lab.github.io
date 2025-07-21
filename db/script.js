@@ -12,7 +12,7 @@ let currentUser     = null;
  * 0.  Bootstrap
  * ----------------------------------------------------------------*/
 window.onload = () => {
-  const xmlFileURL = "https://www.dankolab.org/files/dbstatefile.xml";
+  const xmlFileURL = `${window.location.origin}/files/dbstatefile.xml`;
 
   fetch(xmlFileURL)
     .then(res => {

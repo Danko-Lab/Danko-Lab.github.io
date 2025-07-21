@@ -18,57 +18,42 @@
       <button id="login-button">Log In</button>
     </div>
 
-    <!-- Main Menu & Display Section (hidden by default) -->
-    <div id="main-menu" style="display: none;">
-      <div id="menu-buttons">
-        <button id="balance-btn">Balance</button>
-        <button id="history-btn">History</button>
-        <button id="projection-btn">Projection</button>
-      </div>
-
-      <!-- Content Sections -->
-      <div id="content-area">
-        
-        <!-- Balance Section -->
-        <div id="balance-section" class="section" style="display: none;">
-          <h2>Balance Information</h2>
-          <p id="balance-details"></p>
-        </div>
-
-        <!-- History Section -->
-        <div id="history-section" class="section" style="display: none;">
-          <h2>History</h2>
-          <!-- Canvas for the History Graph -->
-          <canvas id="history-graph" width="600" height="300"></canvas>
-          <h3>Transactions</h3>
-          <table id="history-table">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Type</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
-
-        <!-- Projection Section -->
-        <div id="projection-section" class="section" style="display: none;">
-          <h2>Projection</h2>
-          <label for="projection-months">Months to project:</label>
-          <input type="number" id="projection-months" value="12" min="1" />
-          <button id="projection-update-btn">Update</button>
-
-          <!-- Canvas for the Projection Graph -->
-          <canvas id="projection-graph" width="600" height="300"></canvas>
-        </div>
-
-      </div>
+    <!-- MAIN MENU (shown after login) -->
+    <div id="main-menu" style="display:none;">
+      <button id="balance-btn">Balance</button>
+      <button id="history-btn">History</button>
+      <button id="projection-btn">Projection</button>
     </div>
-  </div>
 
-  <!-- Load JS at the end of the body for performance -->
-  <script src="script.js"></script>
+    <!-- ============ BALANCE VIEW ============ -->
+    <section id="balance-section" style="display:none;">
+      <h2>Balance Information</h2>
+      <p id="balance-details"></p>
+
+      <!-- 👉  New summary lines  👈 -->
+      <p id="total-interest"></p>
+      <p id="next-interest"></p>
+    </section>
+
+    <!-- ============ HISTORY VIEW ============ -->
+    <section id="history-section" style="display:none;">
+      <h3>Transactions</h3>
+      <table id="history-table">
+        <thead>
+          <tr><th>Date</th><th>Type</th><th>Amount ($)</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <canvas id="history-graph" width="600" height="250"></canvas>
+    </section>
+
+    <!-- ============ PROJECTION VIEW ============ -->
+    <section id="projection-section" style="display:none;">
+      <input id="projection-months" value="12" size="3">
+      <button id="projection-update-btn">Update</button>
+      <canvas id="projection-graph" width="600" height="250"></canvas>
+    </section>
+
+<script src="script.js"></script>
 </body>
 </html>

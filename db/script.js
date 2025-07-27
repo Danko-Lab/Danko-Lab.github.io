@@ -150,6 +150,11 @@ function firstDayNextMonth(d) {
 function daysInMonth(d) {
   return endOfMonth(d).getDate();
 }
+function localDate(isoStr) {
+  // "2025-06-01"  ->  2025-06-01T00:00 in local time
+  const [y, m, d] = isoStr.split("-").map(Number);
+  return new Date(y, m - 1, d);
+}
 
 /********************************************************************
  * 4) APY lookup — per user
@@ -157,8 +162,8 @@ function daysInMonth(d) {
 function apyForDateUser(user, d) {
   if (!user?.interestRates?.length) return 0;
   for (const br of user.interestRates) {
-    const s = new Date(br.startDate);
-    const e = new Date(br.endDate);
+    const s = localDate(br.startDate);
+    const e = localDate(br.endDate);
     if (s <= d && d <= e) return br.rate || 0;
   }
   return 0;
@@ -226,7 +231,7 @@ function computeInterestSchedule(user, today = new Date()) {
     const a = new Date(d1), b = new Date(d2);
     let s = 0;
     for (const t of txSorted) {
-      const td = new Date(t.date);
+      const td = localDate(t.date);
       if (a <= td && td <= b) s += t.amount;
     }
     return s;
@@ -235,7 +240,7 @@ function computeInterestSchedule(user, today = new Date()) {
     const b = new Date(d);
     let s = 0;
     for (const t of txSorted) {
-      const td = new Date(t.date);
+      const td = localDate(t.date);
       if (td < b) s += t.amount;
     }
     return s;
@@ -353,11 +358,11 @@ function buildAugmentedTransactions(includeFuture = false) {
 
   const finalizedInterest = interestTx.filter((it) => {
     if (includeFuture) return true;
-    return new Date(it.date) <= today;
+    return localDate(it.date) <= today;
   }).map((it) => ({ date: it.date, type: "Interest", amount: it.amount }));
 
   const all = [...userTx, ...finalizedInterest];
-  all.sort((a, b) => new Date(a.date) - new Date(b.date));
+  all.sort((a, b) => localDate(a.date) - localDate(b.date));
   return all;
 }
 
@@ -399,8 +404,8 @@ function renderHistoryGraph() {
   let bal = 0;
   const dataPoints = [];
   rows.forEach((r) => {
-    bal += r.amount;
-    dataPoints.push({ date: new Date(r.date), balance: bal });
+   bal += r.amount;
+   dataPoints.push({ date: localDate(r.date), balance: bal });
   });
 
   const minDate = dataPoints[0].date.getTime();

@@ -123,7 +123,12 @@
           <date>2025-07-17</date>
           <type>deposit</type>
           <amount>4.00</amount>
-        </transaction>                
+        </transaction> 
+        <transaction>
+          <date>2025-08-11</date>
+          <type>withdrawal</type>
+          <amount>9.00</amount>
+        </transaction>                               
       </transactions>
       <interestRates>
         <interestRate>

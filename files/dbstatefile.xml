@@ -133,7 +133,12 @@
           <date>2025-08-23</date>
           <type>deposit</type>
           <amount>18.00</amount>
-        </transaction>                                      
+        </transaction>
+        <transaction>
+          <date>2025-08-27</date>
+          <type>deposit</type>
+          <amount>4.00</amount>
+        </transaction>                                                                                    
       </transactions>
       <interestRates>
         <interestRate>
@@ -156,6 +161,11 @@
           <type>deposit</type>
           <amount>40.00</amount>
         </transaction>
+        <transaction>
+          <date>2025-08-27</date>
+          <type>deposit</type>
+          <amount>10.00</amount>
+        </transaction>        
       </transactions>
       <interestRates>
         <interestRate>

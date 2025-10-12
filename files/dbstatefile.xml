@@ -194,6 +194,11 @@
           <type>withdrawal</type>
           <amount>29.15</amount>
         </transaction>                                
+        <transaction>
+          <date>2025-10-12</date>
+          <type>deposit</type>
+          <amount>20.00</amount>
+        </transaction>          
       </transactions>
       <interestRates>
         <interestRate>

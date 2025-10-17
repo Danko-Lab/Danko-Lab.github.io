@@ -203,7 +203,12 @@
           <date>2025-10-13</date>
           <type>withdrawal</type>
           <amount>25.00</amount>
-        </transaction>                                
+        </transaction> 
+        <transaction>
+          <date>2025-10-15</date>
+          <type>deposit</type>
+          <amount>4.00</amount>
+        </transaction>                                                 
       </transactions>
       <interestRates>
         <interestRate>

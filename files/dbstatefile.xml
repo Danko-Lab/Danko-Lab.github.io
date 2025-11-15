@@ -229,6 +229,11 @@
           <type>deposit</type>
           <amount>6.00</amount>
         </transaction>
+        <transaction>
+          <date>2025-11-12</date>
+          <type>deposit</type>
+          <amount>4.00</amount>
+        </transaction>                                                
       </transactions>
       <interestRates>
         <interestRate>
@@ -280,7 +285,12 @@
           <date>2025-11-05</date>
           <type>deposit</type>
           <amount>56.00</amount>
-        </transaction>                                
+        </transaction>
+        <transaction>
+          <date>2025-11-12</date>
+          <type>deposit</type>
+          <amount>4.00</amount>
+        </transaction>                                        
       </transactions>
       <interestRates>
         <interestRate>

@@ -253,7 +253,12 @@
           <date>2025-12-22</date>
           <type>deposit</type>
           <amount>15.00</amount>
-        </transaction>                
+        </transaction>
+        <transaction>
+          <date>2025-12-24</date>
+          <type>deposit</type>
+          <amount>18.00</amount>
+        </transaction>                        
       </transactions>
       <interestRates>
         <interestRate>

@@ -304,6 +304,11 @@
           <type>deposit</type>
           <amount>6.00</amount>
         </transaction>
+        <transaction>
+          <date>2026-02-07</date>
+          <type>withdrawal</type>
+          <amount>30.00</amount>
+        </transaction>        
       </transactions>
       <interestRates>
         <interestRate>

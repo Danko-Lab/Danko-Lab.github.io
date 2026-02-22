@@ -308,7 +308,12 @@
           <date>2026-02-07</date>
           <type>withdrawal</type>
           <amount>30.00</amount>
-        </transaction>        
+        </transaction>
+        <transaction>
+          <date>2026-02-22</date>
+          <type>withdrawal</type>
+          <amount>10.00</amount>
+        </transaction>                
       </transactions>
       <interestRates>
         <interestRate>
@@ -434,8 +439,14 @@
         <transaction>
           <date>2026-02-22</date>
           <type>deposit</type>
-          <amount>10.00</amount>
-        </transaction>      </transactions>
+          <amount>16.00</amount>
+        </transaction>
+        <transaction>
+          <date>2026-02-22</date>
+          <type>withdrawal</type>
+          <amount>50.00</amount>
+        </transaction>        
+      </transactions>
       <interestRates>
         <interestRate>
           <startDate>2023-03-01</startDate>

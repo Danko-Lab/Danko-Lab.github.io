@@ -500,7 +500,12 @@
           <date>2026-05-02</date>
           <type>deposit</type>
           <amount>5.00</amount>
-        </transaction>        
+        </transaction>
+        <transaction>
+          <date>2026-06-04</date>
+          <type>withdrawal</type>
+          <amount>10.00</amount>
+        </transaction>                        
       </transactions>
       <interestRates>
         <interestRate>

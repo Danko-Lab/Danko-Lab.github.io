@@ -510,7 +510,17 @@
           <date>2026-06-04</date>
           <type>withdrawal</type>
           <amount>10.00</amount>
-        </transaction>                        
+        </transaction>
+        <transaction>
+          <date>2026-06-17</date>
+          <type>deposit</type>
+          <amount>20.00</amount>
+        </transaction>
+        <transaction>
+          <date>2026-06-21</date>
+          <type>deposit</type>
+          <amount>10.00</amount>
+        </transaction>                                        
       </transactions>
       <interestRates>
         <interestRate>

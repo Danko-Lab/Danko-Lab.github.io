@@ -555,7 +555,12 @@
           <date>2026-08-15</date>
           <type>deposit</type>
           <amount>1.00</amount>
-        </transaction>        
+        </transaction>
+        <transaction>
+          <date>2026-08-20</date>
+          <type>deposit</type>
+          <amount>10.00</amount>
+        </transaction>                
       </transactions>
       <interestRates>
         <interestRate>
